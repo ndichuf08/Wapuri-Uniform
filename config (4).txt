@@ -1,0 +1,2 @@
+// Paste the publishable key from Supabase (Connect button). It starts with sb_publishable_
+window.WAPURI={url:"https://cjgezzvekpqeniyfhanl.supabase.co",key:sb_publishable_ubl2CX6pErkVAixTPOcjjg_-hTmnRR3
