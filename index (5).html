@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1b5e3f"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><script src="config.js"></script><title>Wapuri Uniform – Shop manager</title>
+<style>
+:root{--bg:#f3f6f1;--card:#fff;--ink:#14231c;--mut:#5b6a61;--line:#d9e1da;--br:#1b5e3f;--bi:#fff;--tint:#e6efe8;--ok:#1d7a4d;--low:#a8650c;--out:#b83227;--over:#2c5aa0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1612;--card:#16211b;--ink:#e6efe8;--mut:#9bafa3;--line:#2a392f;--br:#0f3d28;--bi:#e6efe8;--tint:#1d2e24;--ok:#58c08a;--low:#e0a24a;--out:#ee7a6e;--over:#7fa9e6}}
+:root[data-theme="dark"]{--bg:#0e1612;--card:#16211b;--ink:#e6efe8;--mut:#9bafa3;--line:#2a392f;--br:#0f3d28;--bi:#e6efe8;--tint:#1d2e24;--ok:#58c08a;--low:#e0a24a;--out:#ee7a6e;--over:#7fa9e6}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--br);z-index:10}
+nav{display:flex;gap:4px;align-items:center;overflow-x:auto;background:var(--br);color:var(--bi);padding:8px 10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:9}
+.brand{font:700 17px Georgia,"Times New Roman",serif;margin-right:10px;white-space:nowrap}
+nav button{flex:none;background:none;border:0;color:inherit;font:inherit;padding:8px 12px;border-radius:8px;opacity:.8;cursor:pointer}
+nav button.on{background:rgba(255,255,255,.16);opacity:1;font-weight:600}
+main{padding:16px;max-width:1100px;width:100%}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;margin:.2em 0 .5em}
+h1{font-size:26px}h2{font-size:19px;margin-top:1.4em}h3{font-size:16px}
+.mut{color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0 0 12px}
+.kp{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.k{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--br);border-radius:8px;padding:10px 12px}
+.k span{display:block;color:var(--mut);font-size:13px}.k b{font-size:21px;font-variant-numeric:tabular-nums}
+.k.low{border-left-color:var(--low)}.k.out{border-left-color:var(--out)}.k.over{border-left-color:var(--over)}.k.ok{border-left-color:var(--ok)}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:13px;color:var(--mut);font-weight:600;background:var(--tint)}
+.n{text-align:right;font-variant-numeric:tabular-nums}
+.rw{cursor:pointer}.rw:hover{background:var(--tint)}
+.b{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.b.ok{color:var(--ok)}.b.low{color:var(--low)}.b.out{color:var(--out)}.b.over{color:var(--over)}
+.det{background:var(--tint);white-space:normal}
+.sz{display:inline-flex;align-items:center;gap:4px;margin:4px 12px 4px 0}
+.sz .sn{width:60px;font-weight:600}summary{cursor:pointer;font-weight:600}details form{margin-top:10px}
+.sz input{width:58px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.bar input{flex:1;min-width:200px}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--br);outline-offset:1px}
+nav button:focus-visible{outline-color:var(--bi)}
+button{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+button.pri{background:var(--br);color:var(--bi);border-color:var(--br);font-weight:600;padding:10px 16px}
+button.dng{color:var(--out)}
+form.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;align-items:end}
+label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--mut)}
+label.w2{grid-column:span 2}
+.tot{font-weight:600;color:var(--ink);align-self:center}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+textarea{width:100%;min-height:90px;font:12px/1.3 ui-monospace,Menlo,monospace}
+#toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+#toast.show{opacity:1}
+@media(min-width:900px){body{display:grid;grid-template-columns:210px 1fr}nav{flex-direction:column;align-items:stretch;overflow:visible;padding:16px 10px;position:static}nav .brand{margin:0 0 14px 6px}nav button{text-align:left}main{padding:24px 32px}}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+</style></head>
+<body>
+<nav id="nav"></nav><main id="app"></main><div id="toast" role="status"></div>
+<script>
+const SZ=[["22","24","26","28","30","32","34","36","38","40"],["QNTY"],["22","24","26","28","30","32","34","36"],["18","20","22","24","25","26","28"],["L","XL","XXL"],["26","28"],["22","24","25","26","27","28","30"],["S","M","L","XL","XXL","XXXL"],["S","M","L","XL"],["24","26","27","28","29","30","31","32"],["L","XL","XXL","5XL"]];
+const RAW=[["SWB01","SWEATERS","BLACK","color",0,0,[0,0,1,0,0,0,0,0,0,0]],["SWBW01","SWEATERS","BLACK/WHITE","color",0,0,[0,0,0,0,3,6,8,13,2,0]],["SWFL01","SWEATERS","FULL LIFE","color",0,0,[14,16,26,13,7,4,1,0,0,0]],["SWG01","SWEATERS","GREEN","color",0,0,[4,5,5,2,2,2,4,0,2,0]],["SWGWS01","SWEATERS","GREEN WHITE STRIPE","color",0,0,[16,8,5,8,3,3,0,0,0,0]],["SWL01","SWEATERS","LILY","color",0,0,[4,7,5,2,5,1,0,0,0,0]],["SWGE01","SWEATERS","GREEN EDGEWOOD","color",0,0,[5,4,2,3,4,3,0,0,0,0]],["SWT01","SWEATERS","TEJA","school",0,0,[8,7,4,5,5,3,0,0,0,0]],["SWKQJ01","SWEATERS","K&Q JNR","school",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWKQ01","SWEATERS","KINGS&QUEENS","school",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWMJ01","SWEATERS","MWIHOKO.JNR","school",0,0,[0,0,0,0,0,11,10,16,17,0]],["SWE01","SWEATERS","ESTRAC","school",0,0,[9,4,5,1,3,4,0,0,0,0]],["SWP01","SWEATERS","PCEA","school",0,0,[2,3,1,1,0,0,0,0,0,0]],["SWK01","SWEATERS","KIAMBU","school",0,0,[22,2,18,6,0,0,0,0,0,0]],["SWN01","SWEATERS","NAVY","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWNW01","SWEATERS","NAVY-WHITE","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWR01","SWEATERS","RED","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWRW01","SWEATERS","RED-WHITE","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWUK01","SWEATERS","UHURU KENYATTA","school",0,0,[0,0,0,0,0,0,0,0,0,0]],["SWGB01","SWEATERS","GREY-BLUE","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["THB01","THREADS","BLACK","color",1,1,[15]],["THW01","THREADS","WHITE","color",1,1,[0]],["THS01","THREADS","SKY","color",1,1,[10]],["THY01","THREADS","YELLOW","color",1,1,[6]],["THP01","THREADS","PEACH","color",1,1,[10]],["THM01","THREADS","MAROON","color",1,1,[0]],["THN01","THREADS","NAVY","color",1,1,[10]],["THR01","THREADS","ROYAL","color",1,1,[0]],["THG01","THREADS","GREY","color",1,1,[2]],["THO01","THREADS","ORANGE","color",1,1,[11]],["ITB01","CONE THREAD","BLACK","color",1,1,[5]],["ITW01","CONE THREAD","WHITE","color",1,1,[0]],["ITP01","CONE THREAD","PINK","color",1,1,[4]],["ITR01","CONE THREAD","ROYAL","color",1,1,[6]],["ITS01","CONE THREAD","SKY","color",1,1,[4]],["ITM01","CONE THREAD","MAROON","color",1,1,[1]],["ITLP01","CONE THREAD","L.PURPLE","color",1,1,[6]],["ITDP01","CONE THREAD","D.PURPLE","color",1,1,[6]],["ITP02","CONE THREAD","PEACH","color",1,1,[2]],["ITY01","CONE THREAD","YELLOW","color",1,1,[1]],["ITB02","CONE THREAD","BEIGE","color",1,1,[4]],["FLR01","FLEEZE JACKET","RED","color",0,2,[0,2,3,3,4,2,1,0]],["FLB01","FLEEZE JACKET","BLACK","color",0,2,[1,3,2,3,0,0,0,0]],["FLN01","FLEEZE JACKET","NAVY","color",0,2,[0,0,3,2,0,0,0,0]],["FLG01","FLEEZE JACKET","GREEN","color",0,2,[3,2,0,1,0,1,1,0]],["FLG02","FLEEZE JACKET","GREY","color",0,2,[0,0,0,0,0,1,2,0]],["FLM01","FLEEZE JACKET","MAROON","color",0,2,[0,0,0,0,0,0,0,1]],["SHW01","SHORT SLEEVE SHIRT","WHITE","color",0,3,[39,22,28,20,1,27,14]],["SHBC01","SHORT SLEEVE SHIRT","BLUE CHECKED","color",0,3,[0,6,0,7,0,10,6]],["SHGC01","SHORT SLEEVE SHIRT","GREEN CHECKED","color",0,3,[11,19,9,6,0,5,7]],["SHMC01","SHORT SLEEVE SHIRT","MAROON CHECKED","color",0,3,[2,7,7,5,0,0,0]],["SHP01","SHORT SLEEVE SHIRT","PINK","color",0,3,[4,4,6,0,0,0,0]],["SHCW01","SHORT SLEEVE SHIRT","CREAM-WHITE","color",0,3,[0,0,0,3,0,4,3]],["SHCY01","SHORT SLEEVE SHIRT","CREAM YELLOW","color",0,3,[1,0,1,0,0,0,0]],["SHK01","SHORT SLEEVE SHIRT","KIAMBU","school",0,3,[10,7,0,0,0,0,0]],["SHKJ01","SHORT SLEEVE SHIRT","K.JNR","school",0,3,[0,0,0,2,1,3,2]],["SHS01","SHORT SLEEVE SHIRT","SKY","color",0,3,[2,9,11,16,0,7,0]],["ITW02","LONG SLEEVE SHIRT","WHITE","color",0,4,[2,2,3]],["ITS02","LONG SLEEVE SHIRT","SKY","color",0,4,[0,1,0]],["LOM01","LOGO SHIRT","MWIHOKO","school",0,5,[4,2]],["LIW01","LIGHT MATERIAL SHIRT","WHITE","color",0,5,[2,7]],["SHS02","SHORTS","SHORTS","item",0,6,[22,24,25,26,27,28,30]],["TY01","T-SHIRT","YELLOW","color",0,7,[7,4,9,5,2,0]],["TR01","T-SHIRT","RED","color",0,7,[1,1,0,0,0,0]],["TO01","T-SHIRT","ORANGE","color",0,7,[8,3,0,0,3,0]],["TR02","T-SHIRT","ROYAL","color",0,7,[0,3,0,0,0,0]],["TTB01","T-SHIRT","T.BLUE","color",0,7,[0,1,2,7,4,1]],["TS01","T-SHIRT","SKY","color",0,7,[2,2,2,0,0,0]],["TW01","T-SHIRT","WHITE","color",0,7,[7,8,11,7,3,0]],["TK01","T-SHIRT","KIAMBU","school",0,7,[7,0,0,0,0,0]],["GAN01","GAMES","NAVY","color",0,8,[0,2,0,4]],["TRK01","TRACKSUIT","KIAMBU","school",0,0,[14,15,2,2,1,1,0,0,0,0]],["TRT01","TRACKSUIT","TEJA","school",0,0,[0,0,0,0,0,0,0,0,0,0]],["TRN01","TRACKSUIT","NAVY","color",0,0,[2,5,6,4,4,2,4,0,0,0]],["TRL01","TRACKSUIT","LILY","color",0,0,[0,0,0,0,0,0,0,0,0,0]],["TRMJ01","TRACKSUIT","MWIHOKO .JNR","school",0,0,[0,0,0,0,0,0,0,0,0,0]],["TRSG01","TRACKSUIT","SAF.GREEN","color",0,0,[0,0,0,2,1,0,0,0,0,0]],["TRMP01","TRACKSUIT","MAROON-PINK","color",0,0,[7,12,16,8,6,4,1,0,0,0]],["TRS01","TRACKSUIT","SKY","color",0,0,[5,4,3,2,4,3,0,0,0,0]],["TRG01","TRACKSUIT","GREEN","color",0,0,[4,5,6,5,2,5,3,2,3,1]],["TRMW01","TRACKSUIT","MAROON-WHITE","color",0,0,[0,3,3,0,1,1,5,7,2,3]],["TRG02","TRACKSUIT","GREY","color",0,0,[0,0,0,1,0,0,0,0,0,0]],["SKUK01","SKIRT","UHURU. K","school",0,9,[0,0,0,0,2,5,0,2]],["SKM01","SKIRT","MWIHOKO","school",0,9,[1,3,4,9,9,4,1,0]],["SKNJ01","SKIRT","NDIINI .JNR","school",0,9,[0,5,3,3,3,3,0,0]],["BOB01","BOXER","BOXER","item",0,10,[0,0,0,0]]];
+const CATS=["Uniforms","Accessories & Materials","Workwear","Corporate Wear"];
+const BASE=RAW.map(r=>[r[0],r[1],r[2],r[3],CATS[r[4]],SZ[r[5]],r[6]]);
+let DATA=BASE,IDX={};
+const build=()=>{DATA=BASE.concat(S.items||[]).map(d=>S.sz&&S.sz[d[0]]?[d[0],d[1],d[2],d[3],d[4],S.sz[d[0]],d[6]]:d);IDX=Object.fromEntries(DATA.map(d=>[d[0],d]))};
+function setSz(c,sizes,q){S.sz=S.sz||{};S.sz[c]=sizes;S.q[c]=q;build();save()}
+function addItem(v){const p=v.prod.trim().toUpperCase(),va=v.vari.trim().toUpperCase(),sizes=[...new Set(v.sizes.split(",").map(x=>x.trim()).filter(Boolean))];
+if(!p||!va||!sizes.length)return toast("Fill in the product, the school or colour, and at least one size");
+const b=(p.replace(/[^A-Z]/g,"").slice(0,2)+va.replace(/[^A-Z]/g,"").slice(0,2)).padEnd(3,"X");let n=1,c;do{c=b+String(n++).padStart(2,"0")}while(IDX[c]);
+const o=Math.max(0,+v.open||0);S.items=(S.items||[]).concat([[c,p,va,v.type,v.cat,sizes,[]]]);S.q[c]=sizes.map(()=>o);build();open=c;q=c;flt="";save();toast("Added "+c);render()}
+const SCH=["ESTRAC","KIAMBU","KIAMBU JNR","KINGS & QUEENS","KINGS & QUEENS JNR","MWIHOKO","MWIHOKO JNR","NDIINI JNR","PCEA","TEJA","UHURU KENYATTA"];
+const SVC=["Logo Embroidery","Logo Printing","Screen Printing","Heat Press Printing","Uniform Alterations","Custom Branding"];
+const SL={ok:"Healthy",low:"Low stock",out:"Out of stock",over:"Overstock"};
+const KEY="wapuri_shop_v1";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=x=>(+x||0).toLocaleString("en-KE",{maximumFractionDigits:2});
+const pct=x=>((x||0)*100).toFixed(1)+"%";
+const sum=(a,k)=>a.reduce((t,x)=>t+(+x[k]||0),0);
+const iso=n=>{const d=new Date(Date.now()+n*864e5);return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const fresh=()=>({q:Object.fromEntries(BASE.map(d=>[d[0],d[6].slice()])),items:[],sz:{},sales:[],svc:[],set:{name:"Wapuri Uniform",vat:.16,low:10,high:200}});
+let S=fresh();build();
+const save=()=>{};
+const tot=c=>S.q[c].reduce((a,b)=>a+(+b||0),0);
+const stat=c=>{const t=tot(c);return t<=0?"out":t<=S.set.low?"low":t>=S.set.high?"over":"ok"};
+const toast=m=>{const t=$("#toast");t.textContent=m;t.className="show";clearTimeout(toast.t);toast.t=setTimeout(()=>{t.className=""},2600)};
+const tb=(h,r)=>`<div class="sc"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${r.length?r.map(c=>`<tr>${c.map(x=>`<td>${x}</td>`).join("")}</tr>`).join(""):`<tr><td colspan="${h.length}" class="mut">Nothing here yet.</td></tr>`}</tbody></table></div>`;
+const grp=(rows,f)=>{const m={};rows.forEach(x=>{const k=f(x);if(k)(m[k]=m[k]||[]).push(x)});return Object.entries(m)};
+const kp=(l,v,c)=>`<div class="k ${c||""}"><span>${l}</span><b>${v}</b></div>`;
+const words=s=>s.toLowerCase().split(/\s+/).filter(Boolean);
+const match=(d,w)=>w.every(x=>(d[0]+" "+d[1]+" "+d[2]).toLowerCase().includes(x));
+let view="dash",q="",flt="",open=null,tq="",T={};
+const TABS=[["dash","Dashboard"],["find","Search"],["stock","Stock"],["addstock","Add stock"],["sales","Sales"],["take","Stock take"],["rep","Reports"],["svc","Services"],["users","Users"],["set","Settings"]];
+
+const salesTable=()=>tb(["Date","Item","Size","Qty","Price","VAT","Discount","Total","Profit","Paid by","By",""],S.sales.slice(0,200).map(s=>[s.date,esc(s.code+" "+IDX[s.code][1]+" "+IDX[s.code][2]),esc(s.size),s.qty,fmt(s.price),fmt(s.tax),fmt(s.disc),fmt(s.total),fmt(s.profit),s.pay,esc(s.by||""),ME.role=="owner"?`<button data-undo="${s.id}" class="dng">Undo</button>`:""]));
+const stockList=()=>{const w=words(q);const r=DATA.filter(d=>(!flt||stat(d[0])==flt)&&match(d,w));
+const rows=r.map(d=>{const c=d[0],s=stat(c);let h=`<tr class="rw" data-open="${c}"><td>${c}</td><td>${esc(d[1])}</td><td>${esc(d[2])}</td><td class="n">${tot(c)}</td><td><span class="b ${s}">${SL[s]}</span></td></tr>`;
+if(open==c)h+=`<tr><td colspan="5" class="det">${d[5].map((z,i)=>`<div class="sz"><input class="sn" value="${esc(z)}" data-sn="${c}:${i}" aria-label="Size name"><button data-adj="${c}:${i}:-1" aria-label="Remove one">−</button><input type="number" min="0" value="${S.q[c][i]}" data-set="${c}:${i}" aria-label="Quantity, size ${esc(z)}"><button data-adj="${c}:${i}:1" aria-label="Add one">+</button><button data-rmsz="${c}:${i}" class="dng" aria-label="Remove size">×</button></div>`).join("")+`<div class="sz"><input id="ns" placeholder="New size" size="8" aria-label="New size"><button data-addsz="${c}">Add size</button></div>`}</td></tr>`;return h}).join("");
+return `<p class="mut">${r.length} of ${DATA.length} items. Tap an item to see its sizes and change quantities.</p><div class="sc"><table><thead><tr><th>Code</th><th>Product</th><th>School / colour</th><th class="n">Units</th><th>Status</th></tr></thead><tbody>${rows||`<tr><td colspan="5" class="mut">No items match.</td></tr>`}</tbody></table></div>`};
+const takeList=()=>{const w=words(tq);const r=DATA.filter(d=>match(d,w));
+return r.slice(0,8).map(d=>`<div class="card"><h3>${d[0]} ${esc(d[1])} ${esc(d[2])}</h3>${tb(["Size","Expected","Counted","Difference"],d[5].map((z,i)=>{const k=d[0]+":"+i,v=T[k]==null?"":T[k],df=v===""?"":+v-S.q[d[0]][i];return [esc(z),S.q[d[0]][i],`<input type="number" min="0" data-t="${k}" value="${v}" aria-label="Counted, size ${esc(z)}">`,`<span id="df${d[0]}_${i}">${df===""?"":(df>0?"+":"")+df}</span>`]}))}</div>`).join("")+(r.length>8?`<p class="mut">Showing 8 of ${r.length}. Narrow your search to see the rest.</p>`:"")||`<p class="mut">No items match.</p>`};
+
+const itemForm=o=>`<details class="card"${o?" open":""}><summary>Add a new item or uniform</summary><form id="af" class="grid"><label>Category<select name="cat">${CATS.map(x=>`<option>${x}</option>`).join("")}</select></label><label>Product<input name="prod" placeholder="e.g. Sweater" required></label><label>School or colour<input name="vari" placeholder="e.g. Kiambu" required></label><label>Counts as<select name="type"><option value="school">School</option><option value="color">Colour</option><option value="item">Other</option></select></label><label class="w2">Sizes, separated by commas<input name="sizes" value="S, M, L, XL" required></label><label>Opening stock per size<input type="number" name="open" min="0" value="0"></label><button class="pri">Add item</button></form></details>`;
+let fq="";
+const findList=()=>{const w=words(fq);if(!w.length)return `<p class="mut">Start typing to see stock for every size.</p>`;const r=DATA.filter(d=>match(d,w));
+return r.slice(0,20).map(d=>{const s=stat(d[0]);return `<div class="card"><h3>${d[0]} ${esc(d[1])} ${esc(d[2])} <span class="b ${s}">${SL[s]}</span></h3><div>${d[5].map((z,i)=>`<span class="sz"><b>${esc(z)}</b>: ${S.q[d[0]][i]}</span>`).join("")}</div><p class="mut">Total ${tot(d[0])} units, ${esc(d[4])}</p></div>`}).join("")+(r.length>20?`<p class="mut">Showing 20 of ${r.length}. Type more to narrow it down.</p>`:"")||`<p class="mut">No items match.</p>`};
+const V={
+dash(){const s=S.sales,rev=sum(s,"total"),vat=sum(s,"tax"),pr=sum(s,"profit"),ex=rev-vat,cnt={ok:0,low:0,out:0,over:0};
+DATA.forEach(d=>cnt[stat(d[0])]++);
+const inR=(a,b)=>fmt(s.filter(x=>x.date>=a&&x.date<=b).reduce((t,x)=>t+x.total,0));
+const top=grp(s,x=>x.code).map(([c,r])=>[c,sum(r,"qty")]).sort((a,b)=>b[1]-a[1]).slice(0,5);
+const low=DATA.filter(d=>stat(d[0])=="low").sort((a,b)=>tot(a[0])-tot(b[0])).slice(0,8);
+return `<h1>${esc(S.set.name)}</h1><p class="mut">Mwihoko, Kiambu County, Kenya. All amounts in KES.</p>
+<div class="kp">${kp("Revenue incl. VAT",fmt(rev))}${kp("Units sold",sum(s,"qty"))}${kp("Gross profit",fmt(pr))}${kp("Gross margin",pct(ex?pr/ex:0))}${kp("VAT collected",fmt(vat))}${kp("Sales today",inR(iso(0),iso(0)))}${kp("Last 7 days",inR(iso(-6),iso(0)))}${kp("This month",inR(iso(0).slice(0,7)+"-01",iso(0)))}</div>
+<h2>Stock health</h2><div class="kp">${kp("Active items",DATA.length)}${kp("Units in stock",DATA.reduce((t,d)=>t+tot(d[0]),0))}${kp("Healthy",cnt.ok,"ok")}${kp("Low stock",cnt.low,"low")}${kp("Out of stock",cnt.out,"out")}${kp("Overstock",cnt.over,"over")}</div>
+<div class="two"><div><h2>Top 5 best sellers</h2>${tb(["Code","Item","Units sold"],top.map(([c,n])=>[c,esc(IDX[c][1]+" "+IDX[c][2]),n]))}</div>
+<div><h2>Running low</h2>${tb(["Code","Item","Units left"],low.map(d=>[d[0],esc(d[1]+" "+d[2]),tot(d[0])]))}<p><button data-go="stock" data-low="1">See all low stock</button></p></div></div>`},
+stock(){return `<h1>Stock</h1><div class="bar"><input id="q" type="search" placeholder="Search by code, product or school / colour" value="${esc(q)}" aria-label="Search stock"><select id="fl" aria-label="Filter by status"><option value="">All statuses</option>${Object.entries(SL).map(([k,l])=>`<option value="${k}"${flt==k?" selected":""}>${l}</option>`).join("")}</select></div>${itemForm()}<div id="res">${stockList()}</div>`},
+sales(){return `<h1>Sales</h1><form id="sf" class="card grid"><label>Date<input type="date" name="date" value="${iso(0)}" required></label>
+<label class="w2">Item<input name="item" list="dl" placeholder="Type a code or name, e.g. SWK01" required autocomplete="off"></label>
+<datalist id="dl">${DATA.map(d=>`<option value="${d[0]}">${esc(d[1]+" "+d[2])}</option>`).join("")}</datalist>
+<label>Size<select name="size"><option value="">Pick an item first</option></select></label>
+<label>Quantity<input type="number" name="qty" min="1" value="1" required></label>
+<label>Unit price (KES)<input type="number" name="price" min="0" step="any" required></label>
+<label>Discount (KES)<input type="number" name="disc" min="0" step="any" value="0"></label>
+<label>Profit (KES)<input type="number" name="profit" step="any" placeholder="Optional"></label>
+<label>Paid by<select name="pay"><option>Cash</option><option>Paybill</option></select></label>
+<div class="tot" id="pv">VAT KES 0, total KES 0</div><button class="pri">Record sale</button></form>
+<h2>Sales log</h2>${salesTable()}`},
+take(){return `<h1>Stock take</h1><p class="mut">Search an item, type what you counted for each size, then apply. Differences show as you type.</p><div class="bar"><input id="tq" type="search" placeholder="Search by code, product or school / colour" value="${esc(tq)}" aria-label="Search items to count"><button class="pri" data-apply="1">Apply counts</button></div><div id="tres">${takeList()}</div>`},
+rep(){const s=S.sales,row=([k,r])=>{const rev=sum(r,"total"),vat=sum(r,"tax"),pr=sum(r,"profit"),ex=rev-vat;return [esc(k),sum(r,"qty"),fmt(rev),fmt(ex),fmt(vat),fmt(pr),pct(ex?pr/ex:0)]};
+const H=["","Units","Revenue incl. VAT","Revenue excl. VAT","VAT","Profit","Margin"];
+const inv=CATS.map(c=>{const r=DATA.filter(d=>d[4]==c),u=r.reduce((t,d)=>t+tot(d[0]),0),n=k=>r.filter(d=>stat(d[0])==k).length;return [c,u,n("ok"),n("low"),n("out"),n("over")]});
+return `<h1>Reports</h1><h2>Sales by category</h2>${tb(["Category"].concat(H.slice(1)),grp(s,x=>x.cat).map(row))}
+<h2>Sales by school</h2>${tb(["School"].concat(H.slice(1)),grp(s,x=>x.sch).map(row))}
+<h2>VAT by month</h2>${tb(["Month","Revenue excl. VAT","VAT collected"],grp(s,x=>x.date.slice(0,7)).sort().map(([k,r])=>[k,fmt(sum(r,"total")-sum(r,"tax")),fmt(sum(r,"tax"))]))}
+<h2>Sales by payment method</h2>${tb(["Method","Sales","Total"],grp(s,x=>x.pay).map(([k,r])=>[k,r.length,fmt(sum(r,"total"))]))}
+<h2>Inventory by category</h2>${tb(["Category","Units","Healthy","Low","Out","Overstock"],inv)}`},
+svc(){const o=S.svc;return `<h1>Services</h1><p class="mut">Logo and branding work. These orders never change stock.</p><form id="vf" class="card grid"><label>Date<input type="date" name="date" value="${iso(0)}" required></label>
+<label>School<select name="school">${SCH.map(x=>`<option>${x}</option>`).join("")}</select></label>
+<label>Service<select name="svc">${SVC.map(x=>`<option>${x}</option>`).join("")}</select></label>
+<label>Quantity<input type="number" name="qty" min="1" value="1" required></label>
+<label>Rate (KES)<input type="number" name="rate" min="0" step="any" required></label>
+<label class="w2">Notes<input name="notes"></label><button class="pri">Save order</button></form>
+<h2>Service orders</h2>${tb(["Order","Date","School","Service","Qty","Rate","Total","Notes",""],o.map(x=>[x.no,x.date,esc(x.school),esc(x.svc),x.qty,fmt(x.rate),fmt(x.qty*x.rate),esc(x.notes),`<button data-del="${x.id}" class="dng">Delete</button>`]))}`},
+find(){return `<h1>Search</h1><div class="bar"><input id="fq" type="search" placeholder="Type a code, product or school / colour" value="${esc(fq)}" aria-label="Search items"></div><div id="fres">${findList()}</div>`},
+addstock(){return `<h1>Add stock</h1><p class="mut">Use this when new stock arrives. The quantity you type is added to what is already there.</p><form id="rf" class="card grid"><label class="w2">Item<input name="item" list="dl" placeholder="Type a code or name, e.g. SWK01" required autocomplete="off"></label><datalist id="dl">${DATA.map(d=>`<option value="${d[0]}">${esc(d[1]+" "+d[2])}</option>`).join("")}</datalist><label>Size<select name="size"><option value="">Pick an item first</option></select></label><label>Quantity to add<input type="number" name="qty" min="1" value="1" required></label><button class="pri">Add stock</button></form>${itemForm(1)}`},
+users(){loadUsers();return `<h1>Users</h1><p class="mut">Approve people who sign up. Pending accounts see nothing until you approve them.</p><div id="ul">Loading…</div>`},
+set(){const t=S.set;return `<h1>Settings</h1><form id="stf" class="card grid"><label class="w2">Business name<input name="name" value="${esc(t.name)}"></label><label>VAT rate (%)<input type="number" name="vat" step="any" min="0" value="${t.vat*100}"></label>
+<label>Low stock at or below<input type="number" name="low" min="0" value="${t.low}"></label><label>Overstock at or above<input type="number" name="high" min="1" value="${t.high}"></label><button class="pri">Save settings</button></form>
+<p class="mut">Everything is saved in the shared cloud database and updates live for everyone who is signed in.</p>`}
+};
+
+let ME={role:"staff"},sb=null,ip=null;const seen=new Set();
+const setSzL=(c,z,q)=>{S.sz=S.sz||{};S.sz[c]=z;S.q[c]=q;build()};
+function apply(o){const p=o.payload,k=o.kind,d=IDX[p.code]||null,i=d&&p.size!=null?d[5].indexOf(p.size):-1;
+if(k=="sale"){if(i<0)return;const have=S.q[p.code][i],ded=Math.min(have,p.qty),tx=p.qty*p.price*S.set.vat;S.q[p.code][i]=have-ded;S.sales.unshift({id:o.id,date:p.date,code:p.code,size:p.size,qty:p.qty,price:p.price,tax:tx,total:p.qty*p.price+tx-p.disc,disc:p.disc,profit:p.profit,pay:p.pay,cat:d[4],sch:d[3]=="school"?d[2]:"",ded,by:o.who})}
+else if(k=="undo"){const s=S.sales.find(x=>x.id==p.id);if(!s)return;const e=IDX[s.code],j=e?e[5].indexOf(s.size):-1;if(j>=0)S.q[s.code][j]+=s.ded;S.sales=S.sales.filter(x=>x.id!=p.id)}
+else if(k=="adj"){if(i>=0)S.q[p.code][i]=Math.max(0,S.q[p.code][i]+p.delta)}
+else if(k=="item"){const it=p.item;if(IDX[it[0]])return;S.items.push(it);S.q[it[0]]=it[5].map(()=>p.open);build()}
+else if(k=="addsz"){if(d&&i<0)setSzL(p.code,d[5].concat(p.size),S.q[p.code].concat(0))}
+else if(k=="rmsz"){if(i>=0)setSzL(p.code,d[5].filter((_,j)=>j!=i),S.q[p.code].filter((_,j)=>j!=i))}
+else if(k=="rensz"){if(d&&d[5].indexOf(p.old)>=0&&!d[5].includes(p.size)){const a=d[5].slice();a[d[5].indexOf(p.old)]=p.size;S.sales.forEach(x=>{if(x.code==p.code&&x.size==p.old)x.size=p.size});setSzL(p.code,a,S.q[p.code])}}
+else if(k=="svc"){const n=Math.max(0,...S.svc.map(x=>+x.no.slice(3)))+1;S.svc.unshift(Object.assign({},p,{id:o.id,no:"SO-"+String(n).padStart(3,"0")}))}
+else if(k=="svcdel")S.svc=S.svc.filter(x=>x.id!=p.id);
+else if(k=="set")S.set=p}
+async function send(kind,payload){if(!sb)return false;const{data,error}=await sb.from("ops").insert({kind,payload,who:ME.name||ME.email}).select().single();if(error){toast("Not saved: "+error.message);return false}seen.add(data.id);apply(data);return true}
+function nav(){const ok=ME.role=="owner"?TABS:TABS.filter(t=>["find","stock","addstock","sales","take","svc"].includes(t[0]));$("#nav").innerHTML=`<span class="brand">${esc(S.set.name)}</span>`+ok.map(([k,l])=>`<button data-go="${k}" class="${k==view?"on":""}">${l}</button>`).join("")+(ip?`<button data-inst="1">Install app</button>`:"")+`<button data-out="1">Sign out</button>`}
+function render(){if(ME.role!="owner"&&!["find","stock","addstock","sales","take","svc"].includes(view))view="find";nav();$("#app").innerHTML=V[view]()}
+function refresh(){const a=document.activeElement;if(a&&a.closest&&a.closest("#app")&&/INPUT|SELECT|TEXTAREA/.test(a.tagName))return;render()}
+const box=(h,m)=>{$("#nav").innerHTML="";$("#app").innerHTML=`<div class="card" style="max-width:400px;margin:10vh auto"><h1>${h}</h1>${m}</div>`};
+const authForm=m=>box(esc(S.set.name),`<p class="mut">${m||"Sign in to continue."}</p><form id="lf" class="grid" style="grid-template-columns:1fr"><label>Email<input type="email" name="email" required autocomplete="email"></label><label>Password<input type="password" name="pw" minlength="6" required autocomplete="current-password"></label><button class="pri" value="in">Sign in</button><button value="up" formnovalidate>Create account</button></form>`);
+async function loadUsers(){const{data,error}=await sb.from("profiles").select("*").order("created_at");const el=$("#ul");if(!el)return;if(error)return el.textContent=error.message;
+el.innerHTML=tb(["Name","Email","Role","Status",""],data.map(u=>[esc(u.name),esc(u.email),u.role,u.status,u.role=="owner"?"":(u.status!="active"?`<button class="pri" data-st="${u.id}:active">Approve</button>`:"")+(u.status=="suspended"?"":` <button class="dng" data-st="${u.id}:suspended">Suspend</button>`)]))}
+async function boot(){const c=window.WAPURI||{};if(!c.url||!c.key||!window.supabase)return box("Not connected yet",`<p class="mut">Add your Supabase URL and key in config.js, then reload.</p>`);
+sb=sb||supabase.createClient(c.url,c.key);const{data:ss}=await sb.auth.getSession();if(!ss.session)return authForm();
+const u=ss.session.user,{data:p}=await sb.from("profiles").select("*").eq("id",u.id).single();ME=p||{role:"staff",status:"pending",email:u.email};
+if(ME.status!="active")return box(ME.status=="suspended"?"Access removed":"Waiting for approval",`<p class="mut">The owner needs to approve your account before you can use the system. Ask them, then reload this page.</p><button data-out="1">Sign out</button>`);
+S=fresh();build();seen.clear();let all=[],from=0;for(;;){const{data,error}=await sb.from("ops").select("*").order("id").range(from,from+999);if(error)return box("Could not load data",`<p class="mut">${esc(error.message)}</p>`);all=all.concat(data);if(data.length<1000)break;from+=1000}
+all.forEach(o=>{seen.add(o.id);apply(o)});lastId=all.length?all[all.length-1].id:0;view=ME.role=="owner"?"dash":"find";
+sb.channel("ops").on("postgres_changes",{event:"INSERT",schema:"public",table:"ops"},m=>{const o=m.new;if(seen.has(o.id))return;seen.add(o.id);apply(o);refresh()}).subscribe();if(!window._p){window._p=1;setInterval(poll,8000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)poll()})}render()}
+let lastId=0;
+async function poll(){if(!sb||ME.status!="active")return;const{data}=await sb.from("ops").select("*").gt("id",lastId).order("id").limit(1000);if(!data||!data.length)return;let n=0;data.forEach(o=>{if(seen.has(o.id))return;seen.add(o.id);apply(o);n++});lastId=data[data.length-1].id;if(n)refresh()}
+async function addSale(v){const d=IDX[v.item.trim().toUpperCase()];if(!d)return toast("Choose a product code from the list");const c=d[0],si=parseInt(v.size,10),qy=+v.qty;if(!(si>=0))return toast("Choose a size");
+const have=S.q[c][si];if(qy>have&&!confirm("Only "+have+" in stock for size "+d[5][si]+". Record the sale anyway?"))return;
+if(await send("sale",{date:v.date,code:c,size:d[5][si],qty:qy,price:+v.price,disc:+v.disc||0,profit:+v.profit||0,pay:v.pay})){toast("Sale recorded");render()}}
+async function addItem(v){const p=v.prod.trim().toUpperCase(),va=v.vari.trim().toUpperCase(),sizes=[...new Set(v.sizes.split(",").map(x=>x.trim()).filter(Boolean))];
+if(!p||!va||!sizes.length)return toast("Fill in the product, the school or colour, and at least one size");
+const b=(p.replace(/[^A-Z]/g,"").slice(0,2)+va.replace(/[^A-Z]/g,"").slice(0,2)).padEnd(3,"X");let n=1,c;do{c=b+String(n++).padStart(2,"0")}while(IDX[c]);
+if(await send("item",{item:[c,p,va,v.type,v.cat,sizes,[]],open:Math.max(0,+v.open||0)})){open=c;q=c;flt="";toast("Added "+c);render()}}
+function preview(){const f=$("#sf");if(!f)return;const qy=+f.qty.value||0,p=+f.price.value||0,tx=qy*p*S.set.vat;$("#pv").textContent="VAT KES "+fmt(tx)+", total KES "+fmt(qy*p+tx-(+f.disc.value||0))}
+document.addEventListener("click",async e=>{const t=e.target.closest("[data-go],[data-open],[data-adj],[data-undo],[data-del],[data-apply],[data-addsz],[data-rmsz],[data-inst],[data-out],[data-st]");if(!t)return;const d=t.dataset;
+if(d.go){view=d.go;if(d.low){flt="low";q=""}render();scrollTo(0,0)}
+else if(d.open){open=open==d.open?null:d.open;$("#res").innerHTML=stockList()}
+else if(d.adj){const[c,i,n]=d.adj.split(":");if(await send("adj",{code:c,size:IDX[c][5][i],delta:+n}))$("#res").innerHTML=stockList()}
+else if(d.undo){if(confirm("Undo this sale and put the stock back?")&&await send("undo",{id:+d.undo})){toast("Sale undone");render()}}
+else if(d.del){if(await send("svcdel",{id:+d.del}))render()}
+else if(d.apply){let n=0;for(const k of Object.keys(T)){if(T[k]==="")continue;const[c,i]=k.split(":"),dl=(+T[k]||0)-S.q[c][i];if(dl&&!await send("adj",{code:c,size:IDX[c][5][i],delta:dl}))return;n++}T={};toast(n+" counts applied");$("#tres").innerHTML=takeList()}
+else if(d.addsz){const z=$("#ns").value.trim(),c=d.addsz;if(!z)return toast("Type the new size first");if(IDX[c][5].includes(z))return toast("That size already exists");if(await send("addsz",{code:c,size:z}))$("#res").innerHTML=stockList()}
+else if(d.rmsz){const[c,i]=d.rmsz.split(":");if(S.q[c][i]>0&&!confirm("This size still has "+S.q[c][i]+" in stock. Remove it anyway?"))return;if(await send("rmsz",{code:c,size:IDX[c][5][i]}))$("#res").innerHTML=stockList()}
+else if(d.inst)ip.prompt();
+else if(d.out){await sb.auth.signOut();location.reload()}
+else if(d.st){const[u,s]=d.st.split(":");const{error}=await sb.from("profiles").update({status:s}).eq("id",u);if(error)toast(error.message);loadUsers()}});
+document.addEventListener("input",e=>{const t=e.target;
+if(t.id=="fq"){fq=t.value;$("#fres").innerHTML=findList()}
+else if(t.id=="q"){q=t.value;$("#res").innerHTML=stockList()}
+else if(t.id=="tq"){tq=t.value;$("#tres").innerHTML=takeList()}
+else if(t.dataset.t){const[c,i]=t.dataset.t.split(":");T[t.dataset.t]=t.value;const el=$("#df"+c+"_"+i);if(el){const dv=t.value===""?"":+t.value-S.q[c][i];el.textContent=dv===""?"":(dv>0?"+":"")+dv}}
+else if(t.name=="item"){const d=IDX[t.value.trim().toUpperCase()];t.form.size.innerHTML=d?d[5].map((z,i)=>`<option value="${i}">${esc(z)} (${S.q[d[0]][i]} in stock)</option>`).join(""):`<option value="">Pick an item first</option>`}
+if(t.form&&t.form.id=="sf")preview()});
+document.addEventListener("change",async e=>{const t=e.target;if(t.id=="fl"){flt=t.value;$("#res").innerHTML=stockList()}
+else if(t.dataset.sn){const[c,i]=t.dataset.sn.split(":"),z=t.value.trim(),old=IDX[c][5][i];if(z===old)return;if(!z||IDX[c][5].includes(z)){toast("Size name is empty or already used");$("#res").innerHTML=stockList();return}await send("rensz",{code:c,old,size:z});$("#res").innerHTML=stockList()}
+else if(t.dataset.set){const[c,i]=t.dataset.set.split(":"),nv=Math.max(0,+t.value||0),dl=nv-S.q[c][i];if(dl)await send("adj",{code:c,size:IDX[c][5][i],delta:dl});$("#res").innerHTML=stockList()}});
+document.addEventListener("submit",async e=>{e.preventDefault();const f=e.target,v=Object.fromEntries(new FormData(f));
+if(f.id=="lf"){const m=e.submitter&&e.submitter.value,r=m=="up"?await sb.auth.signUp({email:v.email,password:v.pw}):await sb.auth.signInWithPassword({email:v.email,password:v.pw});if(r.error)return toast(r.error.message);if(m=="up"&&!r.data.session)return authForm("Account created. If asked, confirm your email, then sign in.");boot()}
+else if(f.id=="rf"){const d=IDX[v.item.trim().toUpperCase()],si=parseInt(v.size,10);if(!d||!(si>=0))return toast("Choose an item and a size");const n=Math.abs(+v.qty||0);if(await send("adj",{code:d[0],size:d[5][si],delta:n})){toast("Added "+n+" to "+d[0]+" size "+d[5][si]);render()}}
+else if(f.id=="sf")addSale(v);
+else if(f.id=="af")addItem(v);
+else if(f.id=="vf"){if(await send("svc",{date:v.date,school:v.school,svc:v.svc,qty:+v.qty,rate:+v.rate,notes:v.notes})){toast("Order saved");render()}}
+else if(f.id=="stf"){if(await send("set",{name:v.name||"Wapuri Uniform",vat:(+v.vat||0)/100,low:+v.low||0,high:+v.high||1})){toast("Settings saved");render()}}});
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();ip=e;if(ME.status=="active")nav()});
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+boot();
+</script></body></html>
